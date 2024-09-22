@@ -1,0 +1,177 @@
+/* Global form container styling */
+.recipe-form-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  background-color: #f4f9f4;
+}
+
+.recipe-form {
+  background-color: white;
+  border-radius: 15px;
+  padding: 30px;
+  width: 100%;
+  max-width: 700px;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Form heading */
+.form-heading {
+  color: #40ba37;
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* Input group for all fields */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.input-group label {
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.input-group input {
+  padding: 10px;  /* Reduced padding */
+  border: 2px solid #40ba37;
+  border-radius: 5px;
+  font-size: 1em;  /* Reduced font size */
+  transition: border-color 0.3s;
+  width: calc(100% - 50px);  /* Adjusted width to account for the close button */
+  box-sizing: border-box;
+}
+
+.input-group input:focus {
+  border-color: #30922e;
+  outline: none;
+}
+
+/* Close button for removing inputs */
+.btn-close {
+  position: absolute;
+  top: 50%;
+  right: 10px; /* Adjusted right position for better alignment */
+  transform: translateY(-50%);
+  background-color: #ff4f4f;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-close:hover {
+  background-color: #d93636;
+}
+
+/* Add button */
+.add-btn {
+  background-color: #40ba37;
+  color: white;
+  padding: 10px 15px;  /* Reduced padding for a sleeker button */
+  font-size: 1em;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.add-btn:hover {
+  background-color: #30922e;
+}
+
+/* Submit button */
+.submit-btn {
+  background-color: #40ba37;
+  color: white;
+  padding: 12px 0;  /* Reduced padding */
+  font-size: 1.1em;
+  border: none;
+  width: 100%;
+  border-radius: 5px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: #30922e;
+}
+
+/* Section heading */
+.section h3 {
+  color: #40ba37;
+  font-size: 1.8em;
+  margin-bottom: 15px;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .recipe-form {
+    padding: 20px;
+    max-width: 90%;
+  }
+
+  .input-group {
+    margin-bottom: 15px;
+  }
+
+  .form-heading {
+    font-size: 2em;
+  }
+
+  .section h3 {
+    font-size: 1.6em;
+  }
+
+  .input-group input {
+    width: calc(100% - 40px);  /* Adjusted width on smaller screens */
+  }
+
+  .btn-close {
+    right: 5px;  /* Adjusted for smaller screens */
+    width: 20px;
+    height: 20px;
+    font-size: 1em;
+  }
+}
+
+@media (max-width: 480px) {
+  .recipe-form {
+    padding: 15px;
+  }
+
+  .form-heading {
+    font-size: 1.8em;
+  }
+
+  .input-group input {
+    padding: 8px;  /* Further reduced padding */
+    font-size: 0.9em;  /* Smaller font on small screens */
+  }
+
+  .btn-close {
+    right: 5px;  /* Further adjusted for smaller screens */
+    width: 18px;
+    height: 18px;
+    font-size: 0.9em;
+  }
+
+  .add-btn, .submit-btn {
+    padding: 10px;
+    font-size: 0.9em;
+  }
+}

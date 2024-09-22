@@ -1,0 +1,214 @@
+ul,
+ol {
+  margin: 0;
+}
+ul li,
+ol li {
+  list-style: none;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .blog-sidebar-area {
+    margin-top: 80px;
+  }
+}
+@media only screen and (max-width: 767px) {
+  .blog-sidebar-area {
+    margin-top: 80px;
+  }
+}
+
+.single-blog-area {
+  position: relative;
+  z-index: 1;
+}
+.single-blog-area .blog-thumbnail {
+  position: relative;
+  z-index: 1;
+}
+.single-blog-area .blog-thumbnail .post-date {
+  width: 75px;
+  height: 100px;
+  background-color: #40ba37;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  -webkit-transition-duration: 500ms;
+  transition-duration: 500ms;
+  text-align: center;
+}
+@media only screen and (max-width: 767px) {
+  .single-blog-area .blog-thumbnail .post-date {
+    top: 10px;
+    left: 10px;
+  }
+}
+.single-blog-area .blog-thumbnail .post-date a {
+  color: #ffffff;
+  padding: 18px 10px;
+  display: block;
+  line-height: 1.1;
+  font-size: 14px;
+  font-weight: 400;
+}
+.single-blog-area .blog-thumbnail .post-date a span {
+  font-size: 30px;
+  font-weight: 700;
+  display: block;
+}
+.single-blog-area .blog-thumbnail .post-date:hover,
+.single-blog-area .blog-thumbnail .post-date:focus {
+  background-color: #1c8314;
+}
+.single-blog-area .blog-content {
+  position: relative;
+  z-index: 1;
+  padding-top: 40px;
+}
+.single-blog-area .blog-content .post-title {
+  font-size: 22px;
+  color: #474747;
+  margin-bottom: 10px;
+}
+.single-blog-area .blog-content .post-title:hover,
+.single-blog-area .blog-content .post-title:focus {
+  color: #40ba37;
+}
+.single-blog-area .blog-content .meta-data {
+  font-size: 12px;
+  color: #a4a4a4;
+  margin-bottom: 20px;
+}
+.single-blog-area .blog-content .meta-data a {
+  text-decoration: underline;
+  font-size: 12px;
+  color: #a4a4a4;
+}
+.single-blog-area .blog-content .meta-data a:hover,
+.single-blog-area .blog-content .meta-data a:focus {
+  color: #40ba37;
+}
+
+.single-widget {
+  position: relative;
+  z-index: 1;
+}
+.single-widget h6 {
+  margin-bottom: 50px;
+  display: block;
+}
+.single-widget .list {
+  padding-left: 30px;
+}
+.single-widget .list li a {
+  display: block;
+  padding: 5px 0;
+  color: #797979;
+}
+.single-widget .list li a:hover,
+.single-widget .list li a:focus {
+  color: #40ba37;
+}
+
+.pagination {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 20px 0;
+}
+
+.pagination .page-item {
+  margin: 0 5px;
+}
+
+.pagination .page-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  background-color: #ffffff;
+  color: #474747;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pagination .page-link:hover {
+  background-color: #40ba37;
+  color: #ffffff;
+  border-color: #40ba37;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #40ba37;
+  color: #ffffff;
+  border-color: #40ba37;
+}
+
+.pagination .page-item.disabled .page-link {
+  color: #cccccc;
+  cursor: not-allowed;
+}
+
+.pagination .page-item:first-child .page-link::before {
+  content: "←"; /* Left arrow */
+  font-size: 18px;
+}
+
+.pagination .page-item:last-child .page-link::before {
+  content: "→"; /* Right arrow */
+  font-size: 18px;
+}
+
+.pagination .page-item:first-child .page-link:hover::before,
+.pagination .page-item:last-child .page-link:hover::before {
+  color: #ffffff;
+}
+
+.quote-area {
+  position: relative;
+  z-index: 1;
+  border: 10px solid #40ba37;
+  padding: 40px 25px;
+  margin-bottom: 80px;
+}
+.quote-area span {
+  font-size: 48px;
+  font-style: italic;
+  margin-bottom: 30px;
+  display: block;
+  color: #40ba37;
+  line-height: 1;
+}
+.quote-area h4 {
+  font-size: 24px;
+  line-height: 1.5;
+  font-style: italic;
+  margin-bottom: 40px;
+  color: #474747;
+}
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .quote-area h4 {
+    font-size: 20px;
+  }
+}
+.quote-area p {
+  color: #474747;
+  font-size: 16px;
+  margin-bottom: 50px;
+}
+.quote-area .date-comments .date {
+  font-size: 12px;
+  color: #40ba37;
+}
+.quote-area .date-comments .comments {
+  font-size: 12px;
+  color: #9b9b9b;
+}

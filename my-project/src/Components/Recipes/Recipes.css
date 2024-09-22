@@ -1,0 +1,418 @@
+a {
+  text-decoration: none;
+}
+
+.receipe-post-search {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 0 20px;
+}
+
+.receipe-post-search .container-fluid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.receipe-post-search .row {
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.receipe-post-search form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.receipe-post-search form input,
+.receipe-post-search form select {
+  height: 60px;
+  background-color: #f3f5f8;
+  font-size: 16px;
+  padding: 0 20px;
+  border: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-repeat: no-repeat;
+  background-position: right 20px center;
+  background-size: 16px;
+}
+
+.receipe-post-search form select {
+  flex: 1;
+  min-width: 230px;
+}
+
+.receipe-post-search form input {
+  flex: 2;
+  min-width: 255px;
+}
+
+.receipe-post-search form button {
+  height: 60px;
+  background-color: #40ba37;
+  color: white;
+  font-size: 16px;
+  padding: 0 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.receipe-post-search form button:hover {
+  background-color: #369a2c;
+}
+
+.receipe-post-search select::-ms-expand {
+  display: none;
+}
+
+.receipe-post-search select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6' width='16px' height='16px'%3E%3Cpath d='M0 0l5 6 5-6H0z' fill='%23333'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 20px center;
+  background-size: 16px;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .receipe-post-search .col-12 {
+    margin-bottom: 30px;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .receipe-post-search .col-12 {
+    margin-bottom: 15px;
+  }
+  .receipe-post-search form {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .receipe-post-search form input,
+  .receipe-post-search form select,
+  .receipe-post-search form button {
+    width: 100%;
+  }
+}
+
+.recipe-item img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 5px;
+  border: 3px #40ba37 solid;
+}
+
+.recipe-item {
+  margin-bottom: 40px;
+}
+
+.recipe-item a {
+  display: block;
+  margin-bottom: 34px;
+}
+
+.recipe-item .ri-text .cat-name {
+  color: #fff;
+  background: #40ba37;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 4px 25px;
+}
+
+.recipe-item .ri-text a {
+  margin-bottom: 20px;
+  margin-top: 23px;
+}
+
+.recipe-item .ri-text a h4 {
+  font-weight: 700;
+}
+
+.recipe-section {
+  padding-bottom: 160px;
+}
+
+.recipe-section .recipe-pagination {
+  padding-top: 55px;
+}
+
+.recipe-section .recipe-pagination a {
+  display: inline-block;
+  font-size: 14px;
+  color: #353535;
+  height: 39px;
+  width: 39px;
+  line-height: 39px;
+  text-align: center;
+  margin-right: -4px;
+  transition: 0.2s;
+}
+
+.recipe-section .recipe-pagination a.active {
+  background: #40ba37;
+  color: #fff;
+}
+
+.recipe-section .recipe-pagination a:hover {
+  background: #40ba37;
+  color: #fff;
+}
+
+/* Categories Feature Recipe */
+.categories-feature-recipe {
+  position: relative;
+  background: #f8f9fb;
+  padding-bottom: 40px;
+}
+
+.categories-feature-recipe .section-title {
+  width: 430px;
+  text-align: right;
+  background: #40ba37;
+  padding: 18px 0;
+  padding-right: 40px;
+  position: absolute;
+  top: -57px;
+  left: 0;
+}
+
+.categories-feature-recipe .section-title h5 {
+  color: #fff;
+  font-weight: 700;
+}
+
+.categories-feature-recipe .po-relative {
+  position: relative;
+}
+
+.categories-feature-recipe .po-relative .plus-icon {
+  position: absolute;
+  right: 0;
+  top: -157px;
+  width: 80px;
+  background: #40ba37;
+  text-align: center;
+  height: 57px;
+  line-height: 57px;
+  color: #fff;
+}
+
+.cfr-item {
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+
+.cfr-item:hover .cfr-item-img:after {
+  opacity: 0.5;
+}
+
+.cfr-item:hover .cfr-item-img i {
+  opacity: 1;
+}
+
+.cfr-item .cfr-item-img {
+  width: 192px;
+  height: 145px;
+  float: left;
+  margin-right: 25px;
+  position: relative;
+  z-index: 1;
+}
+
+.cfr-item .cfr-item-img:after {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  background: #40ba37;
+  content: "";
+  opacity: 0;
+  z-index: -1;
+  transition: all 0.2s;
+}
+
+.cfr-item .cfr-item-img i {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  top: 50%;
+  transform: translateY(-46px);
+  color: #fff;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: all 0.2s;
+}
+
+.cfr-item .cfr-item-text {
+  overflow: hidden;
+}
+
+.cfr-item .cfr-item-text .cat-name {
+  color: #fff;
+  background: #40ba37;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 4px 25px;
+}
+
+.cfr-item .cfr-item-text a {
+  display: block;
+}
+
+.cfr-item .cfr-item-text a h4 {
+  font-weight: 700;
+  margin-top: 9px;
+  margin-bottom: 20px;
+}
+
+.cfr-item .cfr-item-text p {
+  margin-bottom: 0;
+}
+
+.cfr-small-item {
+  overflow: hidden;
+  margin-bottom: 35px;
+}
+
+.cfr-small-item a {
+  float: left;
+  margin-right: 22px;
+}
+
+.cfr-small-item .cfr-small-text .cat-name {
+  color: #fff;
+  background: #40ba37;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 4px 25px;
+}
+
+.cfr-small-item .cfr-small-text h6 {
+  font-weight: 700;
+  margin-top: 9px;
+  line-height: 22px;
+  color: #353535;
+}
+
+@media only screen and (max-width: 576px) {
+  .recipe-item img {
+    height: auto;
+  }
+  .recipe-item .ri-text .cat-name {
+    font-size: 10px;
+    padding: 4px 15px;
+  }
+  .recipe-item .ri-text a h4 {
+    font-size: 16px;
+  }
+  .recipe-section .recipe-pagination a {
+    height: 35px;
+    width: 35px;
+    line-height: 35px;
+  }
+}
+
+.recipe-item {
+  margin-bottom: 40px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.recipe-item img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-bottom: 2px solid #40ba37;
+}
+
+.recipe-item .ri-text {
+  padding: 20px;
+  background: #fff;
+}
+
+.recipe-item .ri-text .cat-name {
+  font-size: 14px; /* Increased from 12px */
+  padding: 6px 28px; /* Adjust padding to maintain balance */
+  border-radius: 5px;
+}
+
+.recipe-item .ri-text h5 {
+  font-size: 18px; /* Increased from default size */
+  line-height: 1.4; /* Slightly taller line-height for better readability */
+  max-height: 36px; /* Adjust the height according to the new font size */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 10px;
+}
+
+.recipe-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.recipe-item .ri-text {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.alert-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  padding: 0 1rem; /* Add some padding to prevent clipping */
+  width: 100%;
+  box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+.alert {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 650px; /* Adjust as needed */
+  padding: 0.75rem 1.25rem;
+  margin: 0 auto;
+  font-size: 1rem; /* Adjust font size if needed */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow for better visibility */
+  overflow: hidden; 
+}
+
+.alert .btn-close {
+  margin-left: 1rem; /* Add margin to space it away from the text */
+  padding: 0.25rem 0.75rem;
+  background: transparent; /* Ensure the background is transparent */
+  border: none; /* Remove default border */
+  color: inherit; /* Inherit color from the parent */
+  cursor: pointer; /* Make the cursor pointer to indicate it's clickable */
+}
+
+.alert .btn-close:hover {
+  color: #000; /* Change color on hover if needed */
+}
