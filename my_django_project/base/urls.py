@@ -19,6 +19,7 @@ from .views import (
     add_ratings,
     add_to_favourites,
     get_recipes_blogs_for_home,
+    get_all_recipes,
 )
 
 urlpatterns = [
@@ -45,4 +46,5 @@ urlpatterns = [
         get_recipes_blogs_for_home,
         name="get-recipes-and-blogs-for-home",
     ),
+    path("getAllRecipes/", get_all_recipes, name="get-all-recipes"),
 ]

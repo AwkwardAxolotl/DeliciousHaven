@@ -12,6 +12,26 @@ def connect_to_database():
     return db, client
 
 
+def get_all_recipes_from_db():
+    db, client = connect_to_database()
+    recipes = client["Test_project"]["recipes"]
+    return list(
+        recipes.find(
+            {},
+            {
+                "_id": 0,
+                "category": 1,
+                "title": 1,
+                "ingredients": 1,
+                "details": 1,
+                "rating": 1,
+                "total_reviews": 1,
+                "image": 1,
+            },
+        )
+    )
+
+
 def distinct_categories():
     db, client = connect_to_database()
     recipe_db = client["Test_project"]["recipes"]
@@ -167,6 +187,7 @@ def get_recipe(title):
 def get_user(username):
     db, client = connect_to_database()
     return db.find_one({"username": username})
+
 
 def get_favs_from_user(username):
     favourites = get_user(username)["favourites"]

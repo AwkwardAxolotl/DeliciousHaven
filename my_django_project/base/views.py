@@ -17,6 +17,7 @@ from .utils import (
     get_recipe,
     get_user,
     get_favs_from_user,
+    get_all_recipes_from_db,
 )
 from django.core.mail import send_mail
 from django.core.validators import validate_email
@@ -870,9 +871,9 @@ def add_to_favourites(request):
             user_favs = user["favourites"]
             recipe_details = get_recipe(recipe)
             fav_recipe = {
-                "title":recipe,
-                "image":recipe_details.get("image",""),
-                "rating":recipe_details.get("rating","")
+                "title": recipe,
+                "image": recipe_details.get("image", ""),
+                "rating": recipe_details.get("rating", ""),
             }
             recipes = user_favs.get(category, [])
             recipes.append(fav_recipe)
@@ -958,3 +959,27 @@ def get_recipes_blogs_for_home(request):
                 },
                 status=500,
             )
+
+
+@csrf_exempt
+@api_view(["POST"])
+def get_all_recipes(request):
+    try:
+        data = json.loads(request.body)
+        all_recipes = get_all_recipes_from_db()
+        return JsonResponse(
+            {
+                "recipes": all_recipes,
+                "message": "Fetched successfully!!!",
+                "success": True,
+            },
+            status=200,
+        )
+    except Exception as e:
+        return JsonResponse(
+            {
+                "error": str(e),
+                "success": False,
+            },
+            status=500,
+        )

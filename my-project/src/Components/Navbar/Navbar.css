@@ -120,3 +120,58 @@ a {
     margin-right: 10px;
   }
 }
+/* Search Form */
+.search-bar {
+  position: absolute;
+  top: -60px;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  transition: top 0.5s ease;
+}
+
+.search-form-open {
+  top: 0;
+}
+
+.search-bar input {
+  width: calc(100% - 40px);
+  padding: 5px 0px;
+  font-size: 14px;
+  border: none;
+}
+
+.search-bar span {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.search-bar span:hover {
+  color: red;
+}
+
+/* Recipe Cards */
+.recipes-section {
+  transition: top 0.5s ease;
+}
+
+.card {
+  border: none;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.card img {
+  border-radius: 10px 10px 0 0;
+}
+
+.card-title {
+  font-weight: bold;
+  color: #40ba37;
+}

@@ -178,7 +178,7 @@ export default function HomePage() {
       </section>
       <div className="container-fluid">
         <div className="row justify-content-center">
-          <div className="col-12 col-lg-8">
+          <div className="col-12 col-lg-8" key={"mainBlog"}>
             <div className="row">
               <div className="col-12">
                 <div className="single-post wow fadeInUp" data-wow-delay=".2s">
