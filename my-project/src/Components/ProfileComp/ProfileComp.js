@@ -24,6 +24,7 @@ const ProfileComp = () => {
     image: "",
     favourites: {},
     user_recipes: [],
+    notifications: [],
   });
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
@@ -67,14 +68,13 @@ const ProfileComp = () => {
       image: data.image,
       favourites: data.favourites,
       user_recipes: data.user_recipes,
+      notifications: data.notifications,
     };
     setFormData(userData);
-    console.log(formData);
   };
 
   useEffect(() => {
     getData();
-    console.log(formData);
   }, []);
 
   const handleImageUploadSuccess = (newProfilePicPath) => {
@@ -415,7 +415,6 @@ const ProfileComp = () => {
         <div className="row tab-pane fade" id="rentedMovies">
           <section className="recipe-section spad mt-5">
             <div className="container-fluid">
-              {/* Category Filter Buttons */}
               <div className="recipe-category-buttons text-center my-3">
                 <button
                   className={`btn delicious-btn mb-2 ${
@@ -731,7 +730,24 @@ const ProfileComp = () => {
           </section>
         </div>
         <div className="row tab-pane fade" id="notifs">
-          Notifications
+          {Object.keys(formData.notifications).length > 0 ? (
+            <div>
+              {Object.entries(formData.notifications).map(([date, notifs], index) => (
+                <div key={index} className="notification-date-section">
+                  <h4>{date}</h4>
+                  {notifs.map((notif, i) => (
+                    <div key={i} className="notification-card">
+                      <p>{notif}</p>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="no-notifications">
+              <p>No notifications available</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

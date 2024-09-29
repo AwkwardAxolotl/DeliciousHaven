@@ -7,6 +7,7 @@ export default function SingleRecipe() {
   const { username, recipeName } = useParams();
   const [isFav, setIsFav] = useState(false);
   const [userRecipe, setUserRecipe] = useState(false);
+  
   const [recipe, setRecipe] = useState({
     category: "",
     title: "",

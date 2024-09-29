@@ -67,7 +67,9 @@ def signUp(request):
                     "first_name": "",
                     "last_name": "",
                     "phone_no": "",
-                    "profile_pic": "/img/profile_pic.png",
+                    "profile_pic": "/img/profile_icon.png",
+                    "favourites":{},
+                    "notifications":{},
                 }
             )
             response_data = {"message": "User created successfully!!", "success": True}
@@ -272,7 +274,6 @@ def valOTP(request):
                 {"error": "OTP expired!!!", "success": False}, status=400
             )
         otp_db.delete_one({"otp": otp})
-        print(user_otp)
         return JsonResponse(
             {
                 "message": "OTP verified successfully!!",
@@ -470,21 +471,20 @@ def addComment(request):
             comment = data["comment"]
             recipe = data["recipe"]
             userRecipe = data["userRecipe"]
-            print("User Recipe:", userRecipe)
             if userRecipe:
                 user_recipe_name = data["user"]
                 user = get_user(user_recipe_name)
                 notifs = user["notifications"]
                 if notifs:
-                    if notifs[time]:
-                        notifs[time].append(f"{username} has commented on your recipe")
+                    if notifs.get(time, ""):
+                        notifs[time].append(f"{username} has commented on your recipe {title}!!!!")
                     else:
                         notifs[time] = [
-                            f"{username} has commented on your recipe",
+                            f"{username} has commented on your recipe {title}!!!!",
                         ]
                 else:
                     notifs[time] = [
-                        f"{username} has commented on your recipe",
+                        f"{username} has commented on your recipe {title}!!!!",
                     ]
                 db.update_one(
                     {"username": user_recipe_name}, {"$set": {"notifications": notifs}}
@@ -517,7 +517,7 @@ def addComment(request):
                 {"success": True, "message": "Comment added successfully!!!"},
                 status=200,
             )
-        except:
+        except Exception as e:
             return JsonResponse(
                 {"success": False, "error": "Unknown error occured!!!!"}, status=404
             )
@@ -625,6 +625,7 @@ def getUserDetails(request):
                         "image": user_entry.get("profile_pic", ""),
                         "favourites": user_entry.get("favourites", ""),
                         "user_recipes": user_recipes,
+                        "notifications": user_entry.get("notifications", ""),
                     },
                     status=200,
                 )
@@ -848,15 +849,15 @@ def add_ratings(request):
                 if notifs:
                     if notifs[time]:
                         notifs[time].append(
-                            f"{username} has rated your recipe {rating}/5"
+                            f"{username} has rated your recipe {title} {rating}/5!!!!"
                         )
                     else:
                         notifs[time] = [
-                            f"{username} has rated your recipe {rating}/5",
+                            f"{username} has rated your recipe {title} {rating}/5!!!!",
                         ]
                 else:
                     notifs[time] = [
-                        f"{username} has rated your recipe {rating}/5",
+                        f"{username} has rated your recipe {title} {rating}/5!!!!",
                     ]
                 db.update_one(
                     {"username": user_recipe_name}, {"$set": {"notifications": notifs}}
@@ -909,7 +910,6 @@ def add_ratings(request):
                     status=200,
                 )
         except Exception as e:
-            raise e
             return JsonResponse(
                 {
                     "error": str(e),

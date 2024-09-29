@@ -144,3 +144,37 @@ section a:hover {
   border-color: #f5c6cb;
   color: #721c24;
 }
+
+.notification-date-section {
+  margin-bottom: 1.5rem;
+}
+
+.notification-date-section h4 {
+  color: #40ba37;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.notification-card {
+  background-color: rgba(64, 186, 55, 0.05);
+  border: 1px solid rgba(64, 186, 55, 0.2);
+  border-radius: 0.35rem;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  transition: background-color 0.3s;
+}
+
+.notification-card:hover {
+  background-color: rgba(64, 186, 55, 0.1);
+}
+
+.no-notifications {
+  text-align: center;
+  padding: 2rem;
+  color: #757575;
+}
+
+.no-notifications p {
+  font-weight: bold;
+  color: #337a29;
+}
