@@ -169,16 +169,6 @@ def get_recipe(title):
         {"title": title},
         {
             "_id": 0,
-            "category": 1,
-            "title": 1,
-            "ingredients": 1,
-            "details": 1,
-            "directions": 1,
-            "rating": 1,
-            "total_reviews": 1,
-            "image": 1,
-            "comments": 1,
-            "reviews": 1,
         },
     )
     return recipe

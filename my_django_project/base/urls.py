@@ -18,8 +18,10 @@ from .views import (
     get_single_recipe,
     add_ratings,
     add_to_favourites,
+    remove_from_favourites,
     get_recipes_blogs_for_home,
     get_all_recipes,
+    upload_recipe,
 )
 
 urlpatterns = [
@@ -42,9 +44,13 @@ urlpatterns = [
     path("ratings/", add_ratings, name="add-ratings"),
     path("addToFavourites/", add_to_favourites, name="add-to-favourites"),
     path(
+        "removeFromFavourites/", remove_from_favourites, name="remove-from-favourites"
+    ),
+    path(
         "getRecipesBlogs/",
         get_recipes_blogs_for_home,
         name="get-recipes-and-blogs-for-home",
     ),
     path("getAllRecipes/", get_all_recipes, name="get-all-recipes"),
+    path("addRecipe/", upload_recipe),
 ]

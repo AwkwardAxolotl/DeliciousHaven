@@ -34,7 +34,7 @@ export default function App() {
           path="/recipeSingle/:username/:recipeName"
           element={<Recipe />}
         ></Route>
-        <Route path="/addRecipe" element={<AddRecipe></AddRecipe>}></Route>
+        <Route path="/addRecipe/:username" element={<AddRecipe></AddRecipe>}></Route>
       </Routes>
     </BrowserRouter>
   );

@@ -17,15 +17,24 @@
 }
 
 /* Form heading */
-.form-heading {
-  color: #40ba37;
-  font-size: 2.5em;
-  margin-bottom: 20px;
-  text-align: center;
-  font-weight: bold;
-  text-transform: uppercase;
+.form-heading-container {
+  text-align: center; /* Center the heading block inside the container */
 }
 
+/* Form heading */
+.form-heading {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.95);
+  box-sizing: border-box;
+  font: 700 28px/32px "Copper Pot", serif;
+  box-shadow: inset 0 -16px 0 0 #40ba37; /* Shadow below the text */
+  padding-bottom: 4px;
+  display: inline-block; /* Ensure heading width matches the text */
+  text-align: center; /* Ensure text is centered within itself */
+}
 /* Input group for all fields */
 .input-group {
   display: flex;
@@ -41,12 +50,12 @@
 }
 
 .input-group input {
-  padding: 10px;  /* Reduced padding */
+  padding: 10px; /* Reduced padding */
   border: 2px solid #40ba37;
   border-radius: 5px;
-  font-size: 1em;  /* Reduced font size */
+  font-size: 1em; /* Reduced font size */
   transition: border-color 0.3s;
-  width: calc(100% - 50px);  /* Adjusted width to account for the close button */
+  width: calc(100% - 50px); /* Adjusted width to account for the close button */
   box-sizing: border-box;
 }
 
@@ -59,7 +68,7 @@
 .btn-close {
   position: absolute;
   top: 50%;
-  right: 10px; /* Adjusted right position for better alignment */
+  right: 10px;
   transform: translateY(-50%);
   background-color: #ff4f4f;
   color: white;
@@ -80,7 +89,7 @@
 .add-btn {
   background-color: #40ba37;
   color: white;
-  padding: 10px 15px;  /* Reduced padding for a sleeker button */
+  padding: 10px 15px; /* Reduced padding for a sleeker button */
   font-size: 1em;
   border: none;
   border-radius: 5px;
@@ -97,7 +106,7 @@
 .submit-btn {
   background-color: #40ba37;
   color: white;
-  padding: 12px 0;  /* Reduced padding */
+  padding: 12px 0; /* Reduced padding */
   font-size: 1.1em;
   border: none;
   width: 100%;
@@ -138,11 +147,11 @@
   }
 
   .input-group input {
-    width: calc(100% - 40px);  /* Adjusted width on smaller screens */
+    width: calc(100% - 40px); /* Adjusted width on smaller screens */
   }
 
   .btn-close {
-    right: 5px;  /* Adjusted for smaller screens */
+    right: 5px; /* Adjusted for smaller screens */
     width: 20px;
     height: 20px;
     font-size: 1em;
@@ -159,19 +168,109 @@
   }
 
   .input-group input {
-    padding: 8px;  /* Further reduced padding */
-    font-size: 0.9em;  /* Smaller font on small screens */
+    padding: 8px; /* Further reduced padding */
+    font-size: 0.9em; /* Smaller font on small screens */
   }
 
   .btn-close {
-    right: 5px;  /* Further adjusted for smaller screens */
+    right: 5px; /* Further adjusted for smaller screens */
     width: 18px;
     height: 18px;
     font-size: 0.9em;
   }
 
-  .add-btn, .submit-btn {
+  .add-btn,
+  .submit-btn {
     padding: 10px;
     font-size: 0.9em;
   }
+}
+
+/* Alert styling */
+.alert {
+  max-width: 600px;
+  margin: 0 auto 20px auto;
+  padding: 15px;
+  font-size: 1em;
+  border-radius: 5px;
+  text-align: center;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.alert-danger {
+  background-color: #ff4f4f;
+  color: white;
+}
+
+.alert-success {
+  background-color: #40ba37;
+  color: white;
+}
+
+.alert-dismissible .close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5em;
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.alert-dismissible .close:hover {
+  color: #ccc;
+}
+
+
+.image-upload-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-file-upload {
+  position: relative;
+  display: inline-block;
+}
+
+.file-input {
+  display: none;
+}
+
+.upload-btn {
+  background-color: #40ba37;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.upload-btn:hover {
+  background-color: #35a42e;
+}
+
+.file-name {
+  display: inline-block;
+  margin-left: 10px;
+  font-size: 14px;
+  color: #333;
+  vertical-align: middle;
+}
+
+/* Image preview container */
+.image-preview {
+  margin-top: 10px;
+  max-width: 100%;
+  max-height: 200px;
+}
+
+.image-preview img {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

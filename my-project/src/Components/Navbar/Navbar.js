@@ -227,7 +227,7 @@ export default function Navbar() {
                     }}
                   />
                   <div className="card-body">
-                    <h5 className="card-title">{recipe.title}</h5>
+                    <a href={"/recipeSingle/"+username+"/"+recipe.title}><h5 className="card-title">{recipe.title}</h5></a>
                     <p className="card-text">Rating: {recipe.rating}</p>
                   </div>
                 </div>

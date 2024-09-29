@@ -54,6 +54,7 @@ const BlogPage = () => {
         title: encodedTitle,
         time: formattedDate,
         username: atob(username),
+        userRecipe:false,
         recipe: false,
       }),
     });

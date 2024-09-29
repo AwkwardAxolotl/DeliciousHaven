@@ -3,9 +3,10 @@ import "./SingleRecipe.css";
 import { useParams } from "react-router-dom";
 
 export default function SingleRecipe() {
-  const [visRat,setVisRat] = useState(false)
+  const [visRat, setVisRat] = useState(false);
   const { username, recipeName } = useParams();
   const [isFav, setIsFav] = useState(false);
+  const [userRecipe, setUserRecipe] = useState(false);
   const [recipe, setRecipe] = useState({
     category: "",
     title: "",
@@ -22,7 +23,8 @@ export default function SingleRecipe() {
   const [randomRecipes, setRandomRecipes] = useState([]);
   const [userRating, setUserRating] = useState(null); // Track user's rating
   const [hoverRating, setHoverRating] = useState(null); // Track hover state
-  const [ratingDescription, setRatingDescription] = useState(""); // Track the description for the selected rating
+  const [ratingDescription, setRatingDescription] = useState("");
+  const [userHasRated, setUserHasRated] = useState(false);
 
   const ratingDescriptions = [
     "Awful - This recipe didn't turn out well at all.",
@@ -52,6 +54,11 @@ export default function SingleRecipe() {
         setRecipe(data.recipe);
         setRandomRecipes(data.randomRecipes);
         setIsFav(data.fav);
+        setUserRecipe(data.user_recipe);
+        if (data.recipe.reviews && atob(username) in data.recipe.reviews) {
+          setUserRating(data.recipe.reviews[atob(username)]);
+          setUserHasRated(true);
+        }
       } else {
         console.log("Error: Recipe not found or another issue occurred");
       }
@@ -75,10 +82,12 @@ export default function SingleRecipe() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        user: recipe["username"] ? atob(recipe["username"]) : "",
         comment: comment,
         title: recipe.title,
         time: formattedDate,
         username: atob(username),
+        userRecipe,
         recipe: true,
       }),
     });
@@ -100,9 +109,10 @@ export default function SingleRecipe() {
   };
 
   const handleRatingSubmit = async (rating) => {
+    if (userHasRated) return;
     try {
-      setHoverRating(rating)
-      setVisRat(true)
+      setHoverRating(rating);
+      setVisRat(true);
       setUserRating(rating);
       setRatingDescription(ratingDescriptions[rating - 1]);
 
@@ -112,9 +122,11 @@ export default function SingleRecipe() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          user: recipe["username"] ? atob(recipe["username"]) : "",
           title: recipe.title,
           username: atob(username),
           rating: rating,
+          userRecipe,
         }),
       });
 
@@ -131,13 +143,34 @@ export default function SingleRecipe() {
           rating: data.rating,
           total_reviews: data.total_reviews,
         }));
+        setUserHasRated(true);
       } else {
         console.log("Error updating rating:", data.error);
       }
     } catch (error) {
-      setVisRat(false)
+      setVisRat(false);
       console.error("Error submitting the rating:", error);
     }
+  };
+
+  const removeFromFavourites = async (category) => {
+    try {
+      const res = await fetch("http://localhost:8000/removeFromFavourites/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          recipeName,
+          category,
+          username: atob(username),
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setIsFav(false);
+      }
+    } catch (error) {}
   };
 
   const handleFavourites = async (category) => {
@@ -198,6 +231,12 @@ export default function SingleRecipe() {
                     className="img-rounded"
                   />
                   <h2>{recipe.title}</h2>
+                  {recipe["upload_date"] && (
+                    <p>
+                      Published by {atob(recipe["username"])} on{" "}
+                      {recipe["upload_date"]}
+                    </p>
+                  )}
                   <div className="rating">
                     <span className="rating-stars">
                       {typeof recipe.rating === "number"
@@ -262,13 +301,21 @@ export default function SingleRecipe() {
                 <div className="ingredient-list">
                   <div className="recipe-btn mx-5">
                     <button onClick={handlePrint}> Print Recipe </button>
-                    <button
-                      className="black-btn"
-                      disabled={isFav}
-                      onClick={() => handleFavourites(recipe.category)}
-                    >
-                      {isFav ? "Added" : "Favourites"}
-                    </button>
+                    {isFav ? (
+                      <button
+                        className="black-btn"
+                        onClick={() => removeFromFavourites(recipe.category)}
+                      >
+                        Remove
+                      </button>
+                    ) : (
+                      <button
+                        className="black-btn"
+                        onClick={() => handleFavourites(recipe.category)}
+                      >
+                        Favorites
+                      </button>
+                    )}
                   </div>
                   <div className="list-item">
                     <h5>Ingredients</h5>
@@ -370,18 +417,29 @@ export default function SingleRecipe() {
           <div className="rating-section">
             <h3>Your Rating</h3>
             <div className="rating-stars">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <i
-                  key={star}
-                  className={`star ${userRating >= star ? "filled" : ""}`}
-                  onClick={() => handleRatingSubmit(star)}
-                  onMouseEnter={() => setHoverRating(star)}
-                  onMouseLeave={() => setHoverRating(null)}
-                  style={{ color: hoverRating >= star ? "gold" : "gray" }}
-                >
-                  ★
-                </i>
-              ))}
+              {/* Disable further rating if the user has already rated */}
+              {userHasRated
+                ? Array.from({ length: 5 }, (_, i) => (
+                    <i
+                      key={i}
+                      className={`star ${userRating > i ? "filled" : ""}`}
+                      style={{ color: userRating > i ? "gold" : "gray" }}
+                    >
+                      ★
+                    </i>
+                  ))
+                : [1, 2, 3, 4, 5].map((star) => (
+                    <i
+                      key={star}
+                      className={`star ${userRating >= star ? "filled" : ""}`}
+                      onClick={() => handleRatingSubmit(star)}
+                      onMouseEnter={() => setHoverRating(star)}
+                      onMouseLeave={() => setHoverRating(null)}
+                      style={{ color: hoverRating >= star ? "gold" : "gray" }}
+                    >
+                      ★
+                    </i>
+                  ))}
             </div>
             <p className="rating-description">{ratingDescription}</p>
           </div>

@@ -13,6 +13,7 @@ const ProfileComp = () => {
     navigate("/pageNotFound");
   }
   const [formData, setFormData] = useState({
+    encUsername: username,
     username: decUsername,
     firstName: "",
     lastName: "",
@@ -22,10 +23,15 @@ const ProfileComp = () => {
     newPassword: "",
     image: "",
     favourites: {},
+    user_recipes: [],
   });
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const recipesPerPage = 6;
+
+  const [selectedUserCategory, setSelectedUserCategory] = useState("All");
+  const [currentUserPage, setCurrentUserPage] = useState(1);
+  const userRecipesPerPage = 6;
 
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -45,7 +51,7 @@ const ProfileComp = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username: atob(username) }),
+      body: JSON.stringify({ username: atob(username), encUsername: username }),
     });
 
     const data = await res.json();
@@ -60,8 +66,10 @@ const ProfileComp = () => {
       newPassword: "",
       image: data.image,
       favourites: data.favourites,
+      user_recipes: data.user_recipes,
     };
     setFormData(userData);
+    console.log(formData);
   };
 
   useEffect(() => {
@@ -100,13 +108,42 @@ const ProfileComp = () => {
   // Pagination handler
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  // Handle category selection for user recipes
+  const handleUserCategoryClick = (category) => {
+    setSelectedUserCategory(category);
+    setCurrentUserPage(1); // Reset to the first page when category changes
+  };
+
+  // Filter user recipes based on the selected category
+  const filteredUserRecipes =
+    selectedUserCategory === "All"
+      ? formData.user_recipes // Show all user recipes if 'All' is selected
+      : formData.user_recipes.filter(
+          (recipe) => recipe.category === selectedUserCategory
+        );
+
+  // Pagination logic for user recipes
+  const indexOfLastUserRecipe = currentUserPage * userRecipesPerPage;
+  const indexOfFirstUserRecipe = indexOfLastUserRecipe - userRecipesPerPage;
+  const currentUserRecipes = filteredUserRecipes.slice(
+    indexOfFirstUserRecipe,
+    indexOfLastUserRecipe
+  );
+
+  const totalUserPages = Math.ceil(
+    filteredUserRecipes.length / userRecipesPerPage
+  );
+
+  // Pagination handler for user recipes
+  const paginateUser = (pageNumber) => setCurrentUserPage(pageNumber);
+
   const checkData = async () => {
     const { oldPassword, newPassword } = formData;
     if ((oldPassword && !newPassword) || (!oldPassword && newPassword)) {
       setErrorAlert(true);
       setSuccessAlert(false);
       setErrorMessage("Please fill both the password inputs!!!");
-      return
+      return;
     }
 
     const res = await fetch("http://localhost:8000/updateUserDetails/", {
@@ -157,6 +194,32 @@ const ProfileComp = () => {
             aria-selected="false"
           >
             Favorites
+          </a>
+        </li>
+        <li className="nav-item">
+          <a
+            className="nav-link"
+            id="myRecipes-tab"
+            data-bs-toggle="tab"
+            href="#myRecipes"
+            role="tab"
+            aria-controls="myRecipes"
+            aria-selected="false"
+          >
+            My Recipes
+          </a>
+        </li>
+        <li className="nav-item">
+          <a
+            className="nav-link"
+            id="notifs-tab"
+            data-bs-toggle="tab"
+            href="#notifs"
+            role="tab"
+            aria-controls="notifs"
+            aria-selected="false"
+          >
+            Notifications
           </a>
         </li>
       </ul>
@@ -305,14 +368,14 @@ const ProfileComp = () => {
                       Save changes
                     </button>
 
-                  <a href="/">
-                  <button
-                      className="btn delicious-btn float-end"
-                      type="button"
-                    >
-                      Logout
-                    </button>
-                  </a>
+                    <a href="/">
+                      <button
+                        className="btn delicious-btn float-end"
+                        type="button"
+                      >
+                        Logout
+                      </button>
+                    </a>
                   </form>
                   {successAlert && (
                     <div
@@ -504,6 +567,171 @@ const ProfileComp = () => {
               )}
             </div>
           </section>
+        </div>
+        <div className="row tab-pane fade" id="myRecipes">
+          <section className="recipe-section spad mt-5">
+            <div className="container-fluid">
+              {/* Category Filter Buttons for user recipes */}
+              <div className="recipe-category-buttons text-center my-3">
+                <button
+                  className={`btn delicious-btn mb-2 ${
+                    selectedUserCategory === "All" ? "active" : ""
+                  }`}
+                  onClick={() => handleUserCategoryClick("All")}
+                >
+                  All
+                </button>
+                {[
+                  ...new Set(
+                    formData.user_recipes.map((recipe) => recipe.category)
+                  ),
+                ].map((category, index) => (
+                  <button
+                    key={index}
+                    className={`btn delicious-btn mx-2 mb-2 ${
+                      selectedUserCategory === category ? "active" : ""
+                    }`}
+                    onClick={() => handleUserCategoryClick(category)}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+
+              {/* Recipe Cards for user recipes */}
+              <div className="row">
+                {currentUserRecipes.length > 0 ? (
+                  currentUserRecipes.map((recipe, idx) => (
+                    <div className="col-lg-4 col-sm-6 my-4" key={idx}>
+                      <div className="recipe-item">
+                        <a href="#">
+                          <img
+                            src={recipe.image}
+                            alt={recipe.title}
+                            className="img-fluid"
+                            onError={(e) => {
+                              e.target.src = "/img/default_image.png"; // Fallback for broken image links
+                            }}
+                          />
+                        </a>
+                        <div className="ri-text text-center">
+                          <a
+                            href={`/recipeSingle/${username}/${recipe.title}`}
+                            className="recipe-title-link"
+                          >
+                            <h5 className="text-dark">{recipe.title}</h5>
+                          </a>
+                          <div className="rating mt-2">
+                            <span className="rating-stars-recipe">
+                              {typeof recipe.ratings === "number"
+                                ? Array.from({ length: 5 }, (_, i) => {
+                                    const fullStars = Math.floor(
+                                      recipe.ratings
+                                    );
+                                    const decimalPart =
+                                      recipe.ratings - fullStars;
+
+                                    if (i < fullStars) {
+                                      return (
+                                        <i
+                                          key={i}
+                                          className="fas fa-star"
+                                          style={{ color: "gold" }}
+                                        ></i>
+                                      );
+                                    } else if (
+                                      i === fullStars &&
+                                      decimalPart >= 0.75
+                                    ) {
+                                      return (
+                                        <i
+                                          key={i}
+                                          className="fas fa-star"
+                                          style={{ color: "gold" }}
+                                        ></i>
+                                      );
+                                    } else if (
+                                      i === fullStars &&
+                                      decimalPart >= 0.25
+                                    ) {
+                                      return (
+                                        <i
+                                          key={i}
+                                          className="fas fa-star-half-alt"
+                                          style={{ color: "gold" }}
+                                        ></i>
+                                      );
+                                    } else {
+                                      return (
+                                        <i
+                                          key={i}
+                                          className="far fa-star"
+                                          style={{ color: "gold" }}
+                                        ></i>
+                                      );
+                                    }
+                                  })
+                                : Array.from({ length: 5 }, (_, i) => (
+                                    <i
+                                      key={i}
+                                      className="far fa-star"
+                                      style={{ color: "gold" }}
+                                    ></i>
+                                  ))}
+                            </span>
+                            {typeof recipe.ratings === "number" ? (
+                              <span> ({recipe.ratings.toFixed(1)})</span>
+                            ) : (
+                              <span> No rating given!!!</span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div
+                    className="col-12 text-center"
+                    style={{
+                      color: "#6c757d",
+                      fontSize: "1.5rem",
+                      padding: "50px 0",
+                    }}
+                  >
+                    No recipes added yet :(
+                  </div>
+                )}
+              </div>
+
+              {/* Pagination for user recipes */}
+              {filteredUserRecipes.length > userRecipesPerPage && (
+                <div className="pagination-container text-center">
+                  <nav>
+                    <ul className="pagination justify-content-center">
+                      {Array.from({ length: totalUserPages }, (_, i) => (
+                        <li
+                          key={i}
+                          className={`page-item ${
+                            i + 1 === currentUserPage ? "active" : ""
+                          }`}
+                        >
+                          <button
+                            className="page-link"
+                            onClick={() => paginateUser(i + 1)}
+                          >
+                            {i + 1}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </nav>
+                </div>
+              )}
+            </div>
+          </section>
+        </div>
+        <div className="row tab-pane fade" id="notifs">
+          Notifications
         </div>
       </div>
     </div>

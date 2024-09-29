@@ -469,6 +469,26 @@ def addComment(request):
             time = data["time"]
             comment = data["comment"]
             recipe = data["recipe"]
+            userRecipe = data["userRecipe"]
+            print("User Recipe:", userRecipe)
+            if userRecipe:
+                user_recipe_name = data["user"]
+                user = get_user(user_recipe_name)
+                notifs = user["notifications"]
+                if notifs:
+                    if notifs[time]:
+                        notifs[time].append(f"{username} has commented on your recipe")
+                    else:
+                        notifs[time] = [
+                            f"{username} has commented on your recipe",
+                        ]
+                else:
+                    notifs[time] = [
+                        f"{username} has commented on your recipe",
+                    ]
+                db.update_one(
+                    {"username": user_recipe_name}, {"$set": {"notifications": notifs}}
+                )
             if recipe:
                 recipe = client["Test_project"]["recipes"]
                 comments = list(recipe.find_one({"title": title})["comments"])
@@ -584,7 +604,14 @@ def getUserDetails(request):
         try:
             data = json.loads(request.body)
             username = data.get("username", "")
+            encUsername = data.get("encUsername", "")
             user_entry = db.find_one({"username": username})
+            recipes = client["Test_project"]["recipes"]
+            user_recipes = recipes.find({"username": encUsername}, {"_id": 0})
+            if user_recipes:
+                user_recipes = list(user_recipes)
+            else:
+                user_recipes = []
             if user_entry:
                 return JsonResponse(
                     {
@@ -597,6 +624,7 @@ def getUserDetails(request):
                         "email": user_entry.get("email", ""),
                         "image": user_entry.get("profile_pic", ""),
                         "favourites": user_entry.get("favourites", ""),
+                        "user_recipes": user_recipes,
                     },
                     status=200,
                 )
@@ -612,9 +640,7 @@ def getUserDetails(request):
 @api_view(["POST"])
 def uploadProfileImage(request):
     if request.method == "POST":
-        EXTERNAL_IMAGE_DIR = (
-            "C:/Users/OM/Desktop/DjangoReact/my-project/public/profile_pics"
-        )
+        EXTERNAL_IMAGE_DIR = "C:/Users/OM/Desktop/DeliciousHaven/DeliciousHaven/my-project/public/profile_pics"
         username = request.POST.get("username")
         image = request.FILES.get("image")
 
@@ -762,11 +788,21 @@ def get_single_recipe(request):
         title = data["title"]
         username = data["username"]
         user_favs = get_user(username)["favourites"]
+        user_recipe = False
         recipe = get_recipe(title)
+        if recipe.get("username", ""):
+            user_recipe = True
         random_recipes = get_random_recipes(4)
         fav = False
+        if user_favs:
+            recipe_favs_name = []
+            for category in user_favs.values():
+                for recipes in category:
+                    recipe_favs_name.append(recipes["title"])
+        else:
+            recipe_favs_name = []
         if recipe:
-            if recipe["title"] in user_favs.get(recipe["category"], []):
+            if recipe["title"] in recipe_favs_name:
                 fav = True
             return JsonResponse(
                 {
@@ -775,6 +811,7 @@ def get_single_recipe(request):
                     "recipe": recipe,
                     "randomRecipes": list(random_recipes),
                     "fav": fav,
+                    "user_recipe": user_recipe,
                 },
                 status=200,
             )
@@ -798,10 +835,33 @@ def add_ratings(request):
             rating = data["rating"]
             recipe_db = client["Test_project"]["recipes"]
             username = data["username"]
+            userRecipe = data["userRecipe"]
             recipe = get_recipe(title)
             recipe_rating = recipe.get("rating", "")
             user_ratings = recipe.get("reviews", "")
             user_ratings[username] = rating
+            if userRecipe:
+                user_recipe_name = data["user"]
+                user = get_user(user_recipe_name)
+                notifs = user["notifications"]
+                time = datetime.today().strftime("%B %d, %Y")
+                if notifs:
+                    if notifs[time]:
+                        notifs[time].append(
+                            f"{username} has rated your recipe {rating}/5"
+                        )
+                    else:
+                        notifs[time] = [
+                            f"{username} has rated your recipe {rating}/5",
+                        ]
+                else:
+                    notifs[time] = [
+                        f"{username} has rated your recipe {rating}/5",
+                    ]
+                db.update_one(
+                    {"username": user_recipe_name}, {"$set": {"notifications": notifs}}
+                )
+
             if recipe_rating == "No rating given!!!":
                 recipe_db.update_one(
                     {"title": title},
@@ -823,7 +883,7 @@ def add_ratings(request):
                     status=200,
                 )
             else:
-                total_reviews = recipe.get("total_reviews", "")
+                total_reviews = int(recipe.get("total_reviews", ""))
                 new_total_reviews = total_reviews + 1
                 new_ratings = ((recipe_rating * total_reviews) + rating) / (
                     new_total_reviews
@@ -849,6 +909,7 @@ def add_ratings(request):
                     status=200,
                 )
         except Exception as e:
+            raise e
             return JsonResponse(
                 {
                     "error": str(e),
@@ -887,6 +948,48 @@ def add_to_favourites(request):
                 status=200,
             )
         except Exception as e:
+            return JsonResponse(
+                {
+                    "error": str(e),
+                    "success": False,
+                },
+                status=500,
+            )
+
+
+@csrf_exempt
+@api_view(["POST"])
+def remove_from_favourites(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            recipe = data["recipeName"]
+            category = data["category"]
+            username = data["username"]
+            user = get_user(username)
+            user_favs = user["favourites"]
+            upd_user_favs = {}
+            final_user_favs = {}
+            for category in user_favs:
+                upd_user_favs[category] = []
+                for recipes in user_favs[category]:
+                    if recipes["title"] != recipe:
+                        upd_user_favs[category].append(recipes)
+            for key, item in upd_user_favs.items():
+                if item != []:
+                    final_user_favs[key] = item
+            db.update_one(
+                {"username": username}, {"$set": {"favourites": final_user_favs}}
+            )
+            return JsonResponse(
+                {
+                    "message": "Removed successfully!!!",
+                    "success": True,
+                },
+                status=200,
+            )
+        except Exception as e:
+            print(str(e))
             return JsonResponse(
                 {
                     "error": str(e),
@@ -965,7 +1068,6 @@ def get_recipes_blogs_for_home(request):
 @api_view(["POST"])
 def get_all_recipes(request):
     try:
-        data = json.loads(request.body)
         all_recipes = get_all_recipes_from_db()
         return JsonResponse(
             {
@@ -983,3 +1085,84 @@ def get_all_recipes(request):
             },
             status=500,
         )
+
+
+@csrf_exempt
+@api_view(["POST"])
+def upload_recipe(request):
+    if request.method == "POST":
+        EXTERNAL_IMAGE_DIR = "C:/Users/OM/Desktop/DeliciousHaven/DeliciousHaven/my-project/public/recipe_imgs"
+
+        # Extract form data and files
+        username = request.POST.get("username")
+        title = request.POST.get("title")
+        category = request.POST.get("category")
+        ingredients = request.POST.get("ingredients")  # JSON string
+        directions = request.POST.get("directions")  # JSON string
+        details = request.POST.get("details")  # JSON string
+        recipe_image = request.FILES.get("recipeImage")
+
+        if not username or not recipe_image:
+            return JsonResponse(
+                {"error": "Username or recipe image is missing."}, status=400
+            )
+
+        # Ensure the username subfolder exists
+        user_folder = os.path.join(EXTERNAL_IMAGE_DIR, username)
+        if not os.path.exists(user_folder):
+            os.makedirs(user_folder)
+
+        # Define the file path for the recipe image
+        file_path = os.path.join(user_folder, f"{title}.jpg")
+
+        # Create FileSystemStorage object with overwrite capability
+        fs = FileSystemStorage(location=user_folder)
+
+        # Check if the file already exists and overwrite it
+        if fs.exists(f"{title}.jpg"):
+            fs.delete(f"{title}.jpg")
+
+        fs.save(f"{title}.jpg", recipe_image)
+
+        # Get the relative path to store in the database
+        relative_file_path = os.path.join(
+            "/recipe_imgs", username, f"{title}.jpg"
+        ).replace("\\", "/")
+
+        # Parse the JSON string for ingredients, directions, and details
+        try:
+            ingredients_list = json.loads(ingredients)
+            directions_list = json.loads(directions)
+            details_obj = json.loads(details)
+        except json.JSONDecodeError as e:
+            return JsonResponse({"error": f"Invalid JSON format: {str(e)}"}, status=400)
+
+        # MongoDB collection
+        recipes = client["Test_project"]["recipes"]
+
+        # Save recipe to MongoDB
+        recipe_data = {
+            "username": username,
+            "upload_date": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+            "title": title,
+            "category": category,
+            "image": relative_file_path,
+            "ingredients": ingredients_list,
+            "directions": directions_list,
+            "details": details_obj,
+            "rating": 0,
+            "total_reviews": 0,
+            "favourite": False,
+            "comments": [],
+            "reviews": {},
+        }
+
+        # Insert into MongoDB
+        try:
+            recipes.insert_one(recipe_data)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
+        return JsonResponse({"success": True, "file_path": relative_file_path})
+
+    return JsonResponse({"error": "Invalid request method."}, status=405)
