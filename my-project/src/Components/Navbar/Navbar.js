@@ -93,8 +93,9 @@ export default function Navbar() {
               <div className="col-7 col-sm-6">
                 <div className="signup-search-area d-flex align-items-center justify-content-end">
                   <div
-                    className={`login_register_area ${showSearch ? "hidden" : ""
-                      }`}
+                    className={`login_register_area ${
+                      showSearch ? "hidden" : ""
+                    }`}
                   >
                     <div className="login">
                       <a href="/" style={{ fontWeight: "bold", color: "red" }}>
@@ -192,6 +193,11 @@ export default function Navbar() {
                           Contact
                         </a>
                       </li>
+                      <li className="nav-item">
+                        <a className="nav-link" href={"/addRecipe/" + username}>
+                          Add Recipe
+                        </a>
+                      </li>
                     </ul>
                   </div>
                 </nav>
@@ -227,7 +233,9 @@ export default function Navbar() {
                     }}
                   />
                   <div className="card-body">
-                    <a href={"/recipeSingle/"+username+"/"+recipe.title}><h5 className="card-title">{recipe.title}</h5></a>
+                    <a href={"/recipeSingle/" + username + "/" + recipe.title}>
+                      <h5 className="card-title">{recipe.title}</h5>
+                    </a>
                     <p className="card-text">Rating: {recipe.rating}</p>
                   </div>
                 </div>
@@ -238,7 +246,7 @@ export default function Navbar() {
           {/* Pagination Controls */}
           <div className="pagination-controls d-flex justify-content-center mt-4">
             <button
-              className="btn btn-outline-primary me-2"
+              className="btn btn-outline-success me-2"
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
             >
@@ -248,7 +256,7 @@ export default function Navbar() {
               Page {currentPage} of {totalPages}
             </span>
             <button
-              className="btn btn-outline-primary ms-2"
+              className="btn btn-outline-success ms-2"
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
             >
