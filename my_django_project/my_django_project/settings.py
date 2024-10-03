@@ -137,7 +137,8 @@ CORS_ALLOW_ALL_ORIGINS = False
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "https://delhavfront-k0kwgjk86-krashnas-projects.vercel.app",
+    "https://66fe91fa2515e492ac2ba5c9--delicioushaven.netlify.app",
+    "https://66fe966a445359917e920511--delicioushaven.netlify.app"
 ]
 
 # To allow specific HTTP methods

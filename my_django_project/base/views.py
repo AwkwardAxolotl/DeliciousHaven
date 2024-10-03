@@ -23,6 +23,8 @@ from django.core.mail import send_mail
 from django.core.validators import validate_email
 import re
 import bcrypt
+from my_django_project.settings import cloudinary
+import cloudinary.uploader
 
 db, client = connect_to_database()
 
