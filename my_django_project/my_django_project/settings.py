@@ -137,6 +137,7 @@ CORS_ALLOW_ALL_ORIGINS = False
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "https://delhavfront-k0kwgjk86-krashnas-projects.vercel.app",
 ]
 
 # To allow specific HTTP methods
@@ -174,7 +175,7 @@ import cloudinary
 cloudinary.config(
     cloud_name=os.getenv("CLOUD_NAME"),
     api_key=os.getenv("API_KEY"),
-    api_secret=os.getenv("API_SECRET")
+    api_secret=os.getenv("API_SECRET"),
 )
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
