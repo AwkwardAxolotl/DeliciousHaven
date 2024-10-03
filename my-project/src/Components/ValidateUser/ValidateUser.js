@@ -8,7 +8,7 @@ function ValidateUser({ encryptedUsername }) {
     const validateUser = async () => {
       try {
         const username = atob(encryptedUsername)
-        const res = await fetch("http://localhost:8000/validateUser/", {
+        const res = await fetch("https://del-hav-back-i9qh7hu0y-krashnas-projects.vercel.app/validateUser/", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

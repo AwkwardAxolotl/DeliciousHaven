@@ -103,7 +103,7 @@ const RecipeForm = () => {
     formData.append("details", JSON.stringify(detailsObject)); // Send as JSON object
 
     try {
-      const response = await fetch("http://localhost:8000/addRecipe/", {
+      const response = await fetch("https://del-hav-back-i9qh7hu0y-krashnas-projects.vercel.app/addRecipe/", {
         method: "POST",
         body: formData,
       });

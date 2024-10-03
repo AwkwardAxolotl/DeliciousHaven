@@ -31,8 +31,8 @@ function SignUpForm() {
   const handleOnSubmit = async (evt) => {
     evt.preventDefault();
     setLoading(true);
-    setMessage(null); 
-    const res = await fetch("http://localhost:8000/SignUp/", {
+    setMessage(null);
+    const res = await fetch("https://del-hav-back-i9qh7hu0y-krashnas-projects.vercel.app/SignUp/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -141,13 +141,16 @@ function SignInForm() {
     evt.preventDefault();
     setLoading(true);
     setMessage(null); // Clear the message before new submission
-    const res = await fetch("https://delhavback-jtr730wu8-krashnas-projects.vercel.app/SignIn/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(state),
-    });
+    const res = await fetch(
+      "https://del-hav-back-i9qh7hu0y-krashnas-projects.vercel.app/SignIn/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(state),
+      }
+    );
     const data = await res.json();
     setLoading(false);
     if (data.success === false) {
@@ -234,7 +237,10 @@ export default function SignUpIn() {
   return (
     <>
       <Preloader></Preloader>
-      <div className="bg-container" style={{backgroundImage:"url(/img/bg.jpg)"}}></div>
+      <div
+        className="bg-container"
+        style={{ backgroundImage: "url(/img/bg.jpg)" }}
+      ></div>
       <div className="body shadow-lg">
         <div className="App">
           <div className={containerClass}>

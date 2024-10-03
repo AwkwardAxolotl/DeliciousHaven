@@ -29,7 +29,7 @@ const ProfileImageUpload = ({ username, onUploadSuccess }) => {
     formData.append("username", username);
 
     try {
-      const res = await fetch("http://localhost:8000/uploadProfileImage/", {
+      const res = await fetch("https://del-hav-back-i9qh7hu0y-krashnas-projects.vercel.app/uploadProfileImage/", {
         method: "POST",
         body: formData,
       });

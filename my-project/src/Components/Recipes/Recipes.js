@@ -14,7 +14,7 @@ export default function Recipes() {
 
   const fetchRecipes = async (category = "", ingredients = "") => {
     try {
-      const res = await fetch("http://localhost:8000/getRecipes/", {
+      const res = await fetch("https://del-hav-back-i9qh7hu0y-krashnas-projects.vercel.app/getRecipes/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

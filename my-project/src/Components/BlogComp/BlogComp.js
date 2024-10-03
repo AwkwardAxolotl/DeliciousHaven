@@ -13,7 +13,7 @@ export default function BlogComp() {
   const blogContainerRef = useRef()
 
   const fetchBlogs = async (blogFilter = false) => {
-    const res = await fetch("http://localhost:8000/getBlogs/", {
+    const res = await fetch("https://del-hav-back-i9qh7hu0y-krashnas-projects.vercel.app/getBlogs/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

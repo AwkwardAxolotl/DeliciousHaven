@@ -12,7 +12,7 @@ const GoogleButton = ({ auth, setMessage, setMessageType, navigate }) => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      const res = await fetch("http://localhost:8000/GoogleSignUpIn/", {
+      const res = await fetch("https://del-hav-back-i9qh7hu0y-krashnas-projects.vercel.app/GoogleSignUpIn/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

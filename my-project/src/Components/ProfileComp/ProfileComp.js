@@ -47,7 +47,7 @@ const ProfileComp = () => {
   };
 
   const getData = async () => {
-    const res = await fetch("http://localhost:8000/getUserDetails/", {
+    const res = await fetch("https://del-hav-back-i9qh7hu0y-krashnas-projects.vercel.app/getUserDetails/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -146,7 +146,7 @@ const ProfileComp = () => {
       return;
     }
 
-    const res = await fetch("http://localhost:8000/updateUserDetails/", {
+    const res = await fetch("https://del-hav-back-i9qh7hu0y-krashnas-projects.vercel.app/updateUserDetails/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
