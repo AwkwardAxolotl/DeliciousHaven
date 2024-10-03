@@ -20,7 +20,7 @@ export default function Newsletter() {
 
   const handleNewsletterSubmit = async (evt) => {
     evt.preventDefault();
-    const res = await fetch("https://del-hav-back.vercel.app//SendNewsletter/", {
+    const res = await fetch("https://del-hav-back.vercel.app/SendNewsletter/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
