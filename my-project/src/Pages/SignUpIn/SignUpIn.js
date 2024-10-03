@@ -141,16 +141,13 @@ function SignInForm() {
     evt.preventDefault();
     setLoading(true);
     setMessage(null); // Clear the message before new submission
-    const res = await fetch(
-      "https://del-hav-back-i9qh7hu0y-krashnas-projects.vercel.app/SignIn/",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(state),
-      }
-    );
+    const res = await fetch("https://del-hav-back.vercel.app/SignIn/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(state),
+    });
     const data = await res.json();
     setLoading(false);
     if (data.success === false) {
