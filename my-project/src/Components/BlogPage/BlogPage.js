@@ -44,7 +44,7 @@ const BlogPage = () => {
 
     const options = { year: "numeric", month: "long", day: "numeric" };
     const formattedDate = new Date().toLocaleDateString("en-US", options);
-    const res = await fetch("https://del-hav-back-i9qh7hu0y-krashnas-projects.vercel.app/addComment/", {
+    const res = await fetch("https://del-hav-back-gkh2xx6ly-krashnas-projects.vercel.app/addComment/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

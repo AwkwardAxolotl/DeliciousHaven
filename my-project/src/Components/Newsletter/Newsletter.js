@@ -20,7 +20,7 @@ export default function Newsletter() {
 
   const handleNewsletterSubmit = async (evt) => {
     evt.preventDefault();
-    const res = await fetch("https://del-hav-back-i9qh7hu0y-krashnas-projects.vercel.app/SendNewsletter/", {
+    const res = await fetch("https://del-hav-back-gkh2xx6ly-krashnas-projects.vercel.app/SendNewsletter/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
