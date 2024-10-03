@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta
 import os
+from my_django_project.settings import cloudinary
 from rest_framework.decorators import api_view
 import random
 import string
 from django.http import JsonResponse
-from django.core.files.storage import FileSystemStorage
 import json
 from django.views.decorators.csrf import csrf_exempt
 from .utils import (
@@ -637,11 +637,53 @@ def getUserDetails(request):
             return JsonResponse({"message": str(e), "success": False}, status=500)
 
 
+# @csrf_exempt
+# @api_view(["POST"])
+# def uploadProfileImage(request):
+#     if request.method == "POST":
+#         EXTERNAL_IMAGE_DIR = "C:/Users/OM/Desktop/DeliciousHaven/DeliciousHaven/my-project/public/profile_pics"
+#         username = request.POST.get("username")
+#         image = request.FILES.get("image")
+
+#         if not username or not image:
+#             return JsonResponse(
+#                 {"error": "Username or image file is missing."}, status=400
+#             )
+
+#         # Ensure the external directory exists
+#         if not os.path.exists(EXTERNAL_IMAGE_DIR):
+#             os.makedirs(EXTERNAL_IMAGE_DIR)
+
+#         # Define the file path
+#         file_path = os.path.join(EXTERNAL_IMAGE_DIR, f"{username}.jpg")
+
+#         # Create FileSystemStorage object with overwrite capability
+#         fs = FileSystemStorage(location=EXTERNAL_IMAGE_DIR)
+
+#         # Check if the file already exists and overwrite it
+#         if fs.exists(f"{username}.jpg"):
+#             fs.delete(f"{username}.jpg")
+
+#         fs.save(f"{username}.jpg", image)
+
+#         # Get the relative path to store in the database
+#         relative_file_path = os.path.join("/profile_pics", f"{username}.jpg").replace(
+#             "\\", "/"
+#         )
+
+#         # Update the user's profile_pic field in MongoDB
+#         db.update_one(
+#             {"username": username}, {"$set": {"profile_pic": relative_file_path}}
+#         )
+
+#         return JsonResponse({"success": True, "file_path": relative_file_path})
+
+#     return JsonResponse({"error": "Invalid request method."}, status=405)
+
 @csrf_exempt
 @api_view(["POST"])
 def uploadProfileImage(request):
     if request.method == "POST":
-        EXTERNAL_IMAGE_DIR = "C:/Users/OM/Desktop/DeliciousHaven/DeliciousHaven/my-project/public/profile_pics"
         username = request.POST.get("username")
         image = request.FILES.get("image")
 
@@ -650,33 +692,17 @@ def uploadProfileImage(request):
                 {"error": "Username or image file is missing."}, status=400
             )
 
-        # Ensure the external directory exists
-        if not os.path.exists(EXTERNAL_IMAGE_DIR):
-            os.makedirs(EXTERNAL_IMAGE_DIR)
+        # Upload the image to Cloudinary
+        try:
+            upload_result = cloudinary.uploader.upload(image, folder=f"profile_pics/{username}")
+            file_url = upload_result['secure_url']
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
 
-        # Define the file path
-        file_path = os.path.join(EXTERNAL_IMAGE_DIR, f"{username}.jpg")
+        # Update MongoDB with the image URL
+        db.update_one({"username": username}, {"$set": {"profile_pic": file_url}})
 
-        # Create FileSystemStorage object with overwrite capability
-        fs = FileSystemStorage(location=EXTERNAL_IMAGE_DIR)
-
-        # Check if the file already exists and overwrite it
-        if fs.exists(f"{username}.jpg"):
-            fs.delete(f"{username}.jpg")
-
-        fs.save(f"{username}.jpg", image)
-
-        # Get the relative path to store in the database
-        relative_file_path = os.path.join("/profile_pics", f"{username}.jpg").replace(
-            "\\", "/"
-        )
-
-        # Update the user's profile_pic field in MongoDB
-        db.update_one(
-            {"username": username}, {"$set": {"profile_pic": relative_file_path}}
-        )
-
-        return JsonResponse({"success": True, "file_path": relative_file_path})
+        return JsonResponse({"success": True, "file_path": file_url})
 
     return JsonResponse({"error": "Invalid request method."}, status=405)
 
@@ -1087,13 +1113,90 @@ def get_all_recipes(request):
         )
 
 
+# @csrf_exempt
+# @api_view(["POST"])
+# def upload_recipe(request):
+#     if request.method == "POST":
+#         EXTERNAL_IMAGE_DIR = "C:/Users/OM/Desktop/DeliciousHaven/DeliciousHaven/my-project/public/recipe_imgs"
+
+#         # Extract form data and files
+#         username = request.POST.get("username")
+#         title = request.POST.get("title")
+#         category = request.POST.get("category")
+#         ingredients = request.POST.get("ingredients")  # JSON string
+#         directions = request.POST.get("directions")  # JSON string
+#         details = request.POST.get("details")  # JSON string
+#         recipe_image = request.FILES.get("recipeImage")
+
+#         if not username or not recipe_image:
+#             return JsonResponse(
+#                 {"error": "Username or recipe image is missing."}, status=400
+#             )
+
+#         # Ensure the username subfolder exists
+#         user_folder = os.path.join(EXTERNAL_IMAGE_DIR, username)
+#         if not os.path.exists(user_folder):
+#             os.makedirs(user_folder)
+
+#         # Define the file path for the recipe image
+#         file_path = os.path.join(user_folder, f"{title}.jpg")
+
+#         # Create FileSystemStorage object with overwrite capability
+#         fs = FileSystemStorage(location=user_folder)
+
+#         # Check if the file already exists and overwrite it
+#         if fs.exists(f"{title}.jpg"):
+#             fs.delete(f"{title}.jpg")
+
+#         fs.save(f"{title}.jpg", recipe_image)
+
+#         # Get the relative path to store in the database
+#         relative_file_path = os.path.join(
+#             "/recipe_imgs", username, f"{title}.jpg"
+#         ).replace("\\", "/")
+
+#         # Parse the JSON string for ingredients, directions, and details
+#         try:
+#             ingredients_list = json.loads(ingredients)
+#             directions_list = json.loads(directions)
+#             details_obj = json.loads(details)
+#         except json.JSONDecodeError as e:
+#             return JsonResponse({"error": f"Invalid JSON format: {str(e)}"}, status=400)
+
+#         # MongoDB collection
+#         recipes = client["Test_project"]["recipes"]
+
+#         # Save recipe to MongoDB
+#         recipe_data = {
+#             "username": username,
+#             "upload_date": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+#             "title": title,
+#             "category": category,
+#             "image": relative_file_path,
+#             "ingredients": ingredients_list,
+#             "directions": directions_list,
+#             "details": details_obj,
+#             "rating": 0,
+#             "total_reviews": 0,
+#             "favourite": False,
+#             "comments": [],
+#             "reviews": {},
+#         }
+
+#         # Insert into MongoDB
+#         try:
+#             recipes.insert_one(recipe_data)
+#         except Exception as e:
+#             return JsonResponse({"error": str(e)}, status=500)
+
+#         return JsonResponse({"success": True, "file_path": relative_file_path})
+
+#     return JsonResponse({"error": "Invalid request method."}, status=405)
+
 @csrf_exempt
 @api_view(["POST"])
 def upload_recipe(request):
     if request.method == "POST":
-        EXTERNAL_IMAGE_DIR = "C:/Users/OM/Desktop/DeliciousHaven/DeliciousHaven/my-project/public/recipe_imgs"
-
-        # Extract form data and files
         username = request.POST.get("username")
         title = request.POST.get("title")
         category = request.POST.get("category")
@@ -1107,27 +1210,12 @@ def upload_recipe(request):
                 {"error": "Username or recipe image is missing."}, status=400
             )
 
-        # Ensure the username subfolder exists
-        user_folder = os.path.join(EXTERNAL_IMAGE_DIR, username)
-        if not os.path.exists(user_folder):
-            os.makedirs(user_folder)
-
-        # Define the file path for the recipe image
-        file_path = os.path.join(user_folder, f"{title}.jpg")
-
-        # Create FileSystemStorage object with overwrite capability
-        fs = FileSystemStorage(location=user_folder)
-
-        # Check if the file already exists and overwrite it
-        if fs.exists(f"{title}.jpg"):
-            fs.delete(f"{title}.jpg")
-
-        fs.save(f"{title}.jpg", recipe_image)
-
-        # Get the relative path to store in the database
-        relative_file_path = os.path.join(
-            "/recipe_imgs", username, f"{title}.jpg"
-        ).replace("\\", "/")
+        # Upload the recipe image to Cloudinary
+        try:
+            upload_result = cloudinary.uploader.upload(recipe_image, folder=f"recipe_imgs/{username}")
+            file_url = upload_result['secure_url']
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
 
         # Parse the JSON string for ingredients, directions, and details
         try:
@@ -1146,7 +1234,7 @@ def upload_recipe(request):
             "upload_date": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
             "title": title,
             "category": category,
-            "image": relative_file_path,
+            "image": file_url,  # Store the Cloudinary URL
             "ingredients": ingredients_list,
             "directions": directions_list,
             "details": details_obj,
@@ -1163,6 +1251,6 @@ def upload_recipe(request):
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
 
-        return JsonResponse({"success": True, "file_path": relative_file_path})
+        return JsonResponse({"success": True, "file_path": file_url})
 
     return JsonResponse({"error": "Invalid request method."}, status=405)
