@@ -13,7 +13,7 @@ export default function Navbar() {
 
   const fetchAllRecipes = async () => {
     try {
-      const res = await fetch("https://del-hav-back-gkh2xx6ly-krashnas-projects.vercel.app/getAllRecipes/", {
+      const res = await fetch("https://del-hav-back.vercel.app//getAllRecipes/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

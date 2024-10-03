@@ -24,7 +24,7 @@ function SendOTPForm({ onSuccess }) {
     evt.preventDefault();
     setLoading(true);
     setMessage(null); // Clear the message before new submission
-    const res = await fetch("https://del-hav-back-gkh2xx6ly-krashnas-projects.vercel.app/forPass/", {
+    const res = await fetch("https://del-hav-back.vercel.app//forPass/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -122,7 +122,7 @@ function EnterOTPForm({ onTimeOut }) {
     evt.preventDefault();
     setLoading(true);
     setMessage(null);
-    const res = await fetch("https://del-hav-back-gkh2xx6ly-krashnas-projects.vercel.app/valOTP/", {
+    const res = await fetch("https://del-hav-back.vercel.app//valOTP/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

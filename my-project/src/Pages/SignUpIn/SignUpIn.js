@@ -32,7 +32,7 @@ function SignUpForm() {
     evt.preventDefault();
     setLoading(true);
     setMessage(null);
-    const res = await fetch("https://del-hav-back-gkh2xx6ly-krashnas-projects.vercel.app/SignUp/", {
+    const res = await fetch("https://del-hav-back.vercel.app//SignUp/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

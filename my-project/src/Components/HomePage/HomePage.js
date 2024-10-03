@@ -12,7 +12,7 @@ export default function HomePage() {
   const [side_recipes, setSideRecipes] = useState([]);
 
   const fetchHome = async () => {
-    const res = await fetch("https://del-hav-back-gkh2xx6ly-krashnas-projects.vercel.app/getRecipesBlogs/", {
+    const res = await fetch("https://del-hav-back.vercel.app//getRecipesBlogs/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
