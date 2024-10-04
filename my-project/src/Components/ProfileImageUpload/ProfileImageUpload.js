@@ -29,7 +29,7 @@ const ProfileImageUpload = ({ username, onUploadSuccess }) => {
     formData.append("username", username);
 
     try {
-      const res = await fetch("https://delhavback.onrender.com//uploadProfileImage/", {
+      const res = await fetch("https://delhavback.onrender.com/uploadProfileImage/", {
         method: "POST",
         body: formData,
       });

@@ -8,7 +8,7 @@ function ValidateUser({ encryptedUsername }) {
     const validateUser = async () => {
       try {
         const username = atob(encryptedUsername)
-        const res = await fetch("https://delhavback.onrender.com//validateUser/", {
+        const res = await fetch("https://delhavback.onrender.com/validateUser/", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

@@ -32,7 +32,7 @@ function SignUpForm() {
     evt.preventDefault();
     setLoading(true);
     setMessage(null);
-    const res = await fetch("https://delhavback.onrender.com//SignUp/", {
+    const res = await fetch("https://delhavback.onrender.com/SignUp/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -141,7 +141,7 @@ function SignInForm() {
     evt.preventDefault();
     setLoading(true);
     setMessage(null); // Clear the message before new submission
-    const res = await fetch("https://delhavback.onrender.com//SignIn/", {
+    const res = await fetch("https://delhavback.onrender.com/SignIn/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

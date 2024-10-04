@@ -103,7 +103,7 @@ const RecipeForm = () => {
     formData.append("details", JSON.stringify(detailsObject)); // Send as JSON object
 
     try {
-      const response = await fetch("https://delhavback.onrender.com//addRecipe/", {
+      const response = await fetch("https://delhavback.onrender.com/addRecipe/", {
         method: "POST",
         body: formData,
       });

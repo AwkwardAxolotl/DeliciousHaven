@@ -47,7 +47,7 @@ const ProfileComp = () => {
   };
 
   const getData = async () => {
-    const res = await fetch("https://delhavback.onrender.com//getUserDetails/", {
+    const res = await fetch("https://delhavback.onrender.com/getUserDetails/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -146,7 +146,7 @@ const ProfileComp = () => {
       return;
     }
 
-    const res = await fetch("https://delhavback.onrender.com//updateUserDetails/", {
+    const res = await fetch("https://delhavback.onrender.com/updateUserDetails/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

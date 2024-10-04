@@ -37,7 +37,7 @@ export default function SingleRecipe() {
 
   const fetchRecipe = async () => {
     try {
-      const res = await fetch("https://delhavback.onrender.com//getSingleRecipe/", {
+      const res = await fetch("https://delhavback.onrender.com/getSingleRecipe/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -77,7 +77,7 @@ export default function SingleRecipe() {
 
     const options = { year: "numeric", month: "long", day: "numeric" };
     const formattedDate = new Date().toLocaleDateString("en-US", options);
-    const res = await fetch("https://delhavback.onrender.com//addComment/", {
+    const res = await fetch("https://delhavback.onrender.com/addComment/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -117,7 +117,7 @@ export default function SingleRecipe() {
       setUserRating(rating);
       setRatingDescription(ratingDescriptions[rating - 1]);
 
-      const res = await fetch("https://delhavback.onrender.com//ratings/", {
+      const res = await fetch("https://delhavback.onrender.com/ratings/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -156,7 +156,7 @@ export default function SingleRecipe() {
 
   const removeFromFavourites = async (category) => {
     try {
-      const res = await fetch("https://delhavback.onrender.com//removeFromFavourites/", {
+      const res = await fetch("https://delhavback.onrender.com/removeFromFavourites/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -176,7 +176,7 @@ export default function SingleRecipe() {
 
   const handleFavourites = async (category) => {
     try {
-      const res = await fetch("https://delhavback.onrender.com//addToFavourites/", {
+      const res = await fetch("https://delhavback.onrender.com/addToFavourites/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

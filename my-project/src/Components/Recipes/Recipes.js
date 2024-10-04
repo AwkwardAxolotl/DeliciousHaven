@@ -14,7 +14,7 @@ export default function Recipes() {
 
   const fetchRecipes = async (category = "", ingredients = "") => {
     try {
-      const res = await fetch("https://delhavback.onrender.com//getRecipes/", {
+      const res = await fetch("https://delhavback.onrender.com/getRecipes/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
