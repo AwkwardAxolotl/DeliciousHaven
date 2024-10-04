@@ -26,7 +26,7 @@ export default function ContactForm() {
 
   const handleContactSubmit = async (evt) => {
     evt.preventDefault();
-    const res = await fetch("https://del-hav-back.vercel.app/sendContactEmail/", {
+    const res = await fetch("https://delhavback.onrender.com//sendContactEmail/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -44,7 +44,7 @@ const BlogPage = () => {
 
     const options = { year: "numeric", month: "long", day: "numeric" };
     const formattedDate = new Date().toLocaleDateString("en-US", options);
-    const res = await fetch("https://del-hav-back.vercel.app/addComment/", {
+    const res = await fetch("https://delhavback.onrender.com//addComment/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
