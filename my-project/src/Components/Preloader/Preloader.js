@@ -11,7 +11,7 @@ export default function Preloader() {
 
         setTimeout(() => {
           preloader.style.display = "none";
-        }, 1000); // Match the transition duration in CSS
+        }, 10000); // Match the transition duration in CSS
       }, 2000); // Delay before starting the fade-out animation
     };
 

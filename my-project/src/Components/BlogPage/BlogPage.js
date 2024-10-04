@@ -14,13 +14,16 @@ const BlogPage = () => {
     const fetchBlogPost = async () => {
       try {
         const title = encodedTitle;
-        const response = await fetch(`https://del-hav-back-i9qh7hu0y-krashnas-projects.vercel.app/getSingleBlog/`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ title: title }),
-        });
+        const response = await fetch(
+          `https://delhavback.onrender.com/getSingleBlog/`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ title: title }),
+          }
+        );
 
         const data = await response.json();
         if (data.success) {
@@ -54,7 +57,7 @@ const BlogPage = () => {
         title: encodedTitle,
         time: formattedDate,
         username: atob(username),
-        userRecipe:false,
+        userRecipe: false,
         recipe: false,
       }),
     });
