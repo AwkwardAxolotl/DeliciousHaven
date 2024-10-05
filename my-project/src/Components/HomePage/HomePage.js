@@ -60,17 +60,7 @@ export default function HomePage() {
         },
       },
     });
-    setLoading(false);
   }, []);
-
-  if (loading) {
-    return (
-      <div className="loading-container">
-        <div className="spinner"></div>
-        <p>Loading...</p>
-      </div>
-    );
-  }
   return (
     <>
       <section className="welcome-post-sliders owl-carousel mt-3">
