@@ -8,6 +8,7 @@ export default function BlogComp() {
   const [categories, setCategories] = useState([]);
   const [dates, setDates] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
   const blogsPerPage = 4;
   const { username } = useParams();
   const blogContainerRef = useRef()
@@ -24,6 +25,7 @@ export default function BlogComp() {
     setBlogs(data.blogs);
     setCategories(data.categories);
     setDates(data.dates || dates);
+    setLoading(false)
   };
 
   useEffect(() => {
@@ -80,6 +82,15 @@ export default function BlogComp() {
 
   if (endPageNumber - startPageNumber + 1 < maxPageNumbersToShow) {
     startPageNumber = Math.max(endPageNumber - maxPageNumbersToShow + 1, 1);
+  }
+
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+        <p>Loading...</p>
+      </div>
+    );
   }
 
   return (
