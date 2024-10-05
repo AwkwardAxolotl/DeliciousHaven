@@ -7,7 +7,7 @@ export default function SingleRecipe() {
   const { username, recipeName } = useParams();
   const [isFav, setIsFav] = useState(false);
   const [userRecipe, setUserRecipe] = useState(false);
-  
+
   const [recipe, setRecipe] = useState({
     category: "",
     title: "",
@@ -26,6 +26,7 @@ export default function SingleRecipe() {
   const [hoverRating, setHoverRating] = useState(null); // Track hover state
   const [ratingDescription, setRatingDescription] = useState("");
   const [userHasRated, setUserHasRated] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const ratingDescriptions = [
     "Awful - This recipe didn't turn out well at all.",
@@ -37,13 +38,16 @@ export default function SingleRecipe() {
 
   const fetchRecipe = async () => {
     try {
-      const res = await fetch("https://delhavback.onrender.com/getSingleRecipe/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ title: recipeName, username: atob(username) }),
-      });
+      const res = await fetch(
+        "https://delhavback.onrender.com/getSingleRecipe/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ title: recipeName, username: atob(username) }),
+        }
+      );
 
       if (!res.ok) {
         throw new Error("Network response was not ok");
@@ -60,6 +64,7 @@ export default function SingleRecipe() {
           setUserRating(data.recipe.reviews[atob(username)]);
           setUserHasRated(true);
         }
+        setLoading(false)
       } else {
         console.log("Error: Recipe not found or another issue occurred");
       }
@@ -156,17 +161,20 @@ export default function SingleRecipe() {
 
   const removeFromFavourites = async (category) => {
     try {
-      const res = await fetch("https://delhavback.onrender.com/removeFromFavourites/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          recipeName,
-          category,
-          username: atob(username),
-        }),
-      });
+      const res = await fetch(
+        "https://delhavback.onrender.com/removeFromFavourites/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            recipeName,
+            category,
+            username: atob(username),
+          }),
+        }
+      );
       const data = await res.json();
       if (data.success) {
         setIsFav(false);
@@ -176,17 +184,20 @@ export default function SingleRecipe() {
 
   const handleFavourites = async (category) => {
     try {
-      const res = await fetch("https://delhavback.onrender.com/addToFavourites/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          recipeName,
-          category,
-          username: atob(username),
-        }),
-      });
+      const res = await fetch(
+        "https://delhavback.onrender.com/addToFavourites/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            recipeName,
+            category,
+            username: atob(username),
+          }),
+        }
+      );
       const data = await res.json();
       if (data.success) {
         setIsFav(true);
@@ -202,6 +213,14 @@ export default function SingleRecipe() {
     return atob(username) in recipe.reviews;
   };
 
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+        <p>Loading...</p>
+      </div>
+    );
+  }
   return (
     <>
       <section className="single-page-recipe spad">

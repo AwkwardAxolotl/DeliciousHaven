@@ -10,6 +10,7 @@ export default function Recipes() {
   const [ingredients, setIngredients] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [error, setError] = useState(""); // State to store error messages
+  const [loading, setLoading] = useState(true);
   const recipesPerPage = 6;
 
   const fetchRecipes = async (category = "", ingredients = "") => {
@@ -33,6 +34,7 @@ export default function Recipes() {
           setCategories(data.categories || []);
           setRecipes(data.recipes || []);
         }
+        setLoading(false);
       }
     } catch (err) {
       setError("An unexpected error occurred. Please try again."); // Set error if fetch fails
@@ -64,6 +66,14 @@ export default function Recipes() {
   // Handle dismiss alert
   const dismissAlert = () => setError("");
 
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+        <p>Loading...</p>
+      </div>
+    );
+  }
   return (
     <>
       <div
@@ -126,11 +136,11 @@ export default function Recipes() {
           </div>
           {error && (
             <div className={`alert error`}>
-            <h3>{error}</h3>
-            <button onClick={dismissAlert} className="close-button">
-              &times;
-            </button>
-          </div>
+              <h3>{error}</h3>
+              <button onClick={dismissAlert} className="close-button">
+                &times;
+              </button>
+            </div>
           )}
         </div>
       </div>
@@ -155,7 +165,9 @@ export default function Recipes() {
                       <div className="cat-name text-center fs-4">
                         {recipe.category}
                       </div>
-                      <a href={"/recipeSingle/"+username+"/"+recipe.title}>
+                      <a
+                        href={"/recipeSingle/" + username + "/" + recipe.title}
+                      >
                         <h5 className="text-black">{recipe.title}</h5>
                       </a>
                       <div className="details">

@@ -10,15 +10,19 @@ export default function HomePage() {
   const [side_blogs, setSideBlogs] = useState([]);
   const [main_recipes, setMainRecipes] = useState([]);
   const [side_recipes, setSideRecipes] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchHome = async () => {
-    const res = await fetch("https://delhavback.onrender.com/getRecipesBlogs/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(username),
-    });
+    const res = await fetch(
+      "https://delhavback.onrender.com/getRecipesBlogs/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(username),
+      }
+    );
 
     const data = await res.json();
     if (data.success) {
@@ -26,6 +30,7 @@ export default function HomePage() {
       setSideBlogs(data.side_blogs);
       setMainRecipes(data.main_recipes);
       setSideRecipes(data.side_recipes);
+      setLoading(false);
     } else {
       console.log(data.error);
     }
@@ -58,6 +63,14 @@ export default function HomePage() {
     });
   }, []);
 
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+        <p>Loading...</p>
+      </div>
+    );
+  }
   return (
     <>
       <section className="welcome-post-sliders owl-carousel mt-3">
@@ -141,7 +154,7 @@ export default function HomePage() {
               >
                 <img src="/img/category-1.jpg" alt="" />
                 <div className="catagory-title">
-                  <a href={"/recipes/"+username}>
+                  <a href={"/recipes/" + username}>
                     <h5>Food</h5>
                   </a>
                 </div>
@@ -154,7 +167,7 @@ export default function HomePage() {
               >
                 <img src="/img/category-2.jpg" alt="" />
                 <div className="catagory-title">
-                  <a href={"/blog/"+username}>
+                  <a href={"/blog/" + username}>
                     <h5>Blogs</h5>
                   </a>
                 </div>
@@ -167,7 +180,7 @@ export default function HomePage() {
               >
                 <img src="/img/category-3.jpg" alt="" />
                 <div className="catagory-title">
-                  <a href={"/profile/"+username}>
+                  <a href={"/profile/" + username}>
                     <h5>Profile</h5>
                   </a>
                 </div>
@@ -410,8 +423,8 @@ export default function HomePage() {
                 </div>
                 <h4 className="font-shadow-into-light">Krashna Mehta</h4>
                 <p>
-                  So yeah I made this website somehow. I am trying to be
-                  a techie because 💸 I don't know much about myself tbh.
+                  So yeah I made this website somehow. I am trying to be a
+                  techie because 💸 I don't know much about myself tbh.
                 </p>
               </div>
 
@@ -460,9 +473,7 @@ export default function HomePage() {
                       />
                       <div className="post-content">
                         <a href={"/recipeSingle/" + username + "/" + r.title}>
-                          <h6 className="text-black">
-                            {r.title}
-                          </h6>
+                          <h6 className="text-black">{r.title}</h6>
                         </a>
                         <p>{r.category}</p>
                       </div>
@@ -471,19 +482,19 @@ export default function HomePage() {
               </div>
 
               <div className="single-widget mb-80">
-                  <div className="quote-area text-center">
-                    <span>"</span>
-                    <h4>
-                      Nothing is better than going home to family and eating
-                      good food and relaxing
-                    </h4>
-                    <p>John Smith</p>
-                    <div className="date-comments d-flex justify-content-between">
-                      <div className="date">January 04, 2018</div>
-                      <div className="comments">2 Comments</div>
-                    </div>
+                <div className="quote-area text-center">
+                  <span>"</span>
+                  <h4>
+                    Nothing is better than going home to family and eating good
+                    food and relaxing
+                  </h4>
+                  <p>John Smith</p>
+                  <div className="date-comments d-flex justify-content-between">
+                    <div className="date">January 04, 2018</div>
+                    <div className="comments">2 Comments</div>
                   </div>
                 </div>
+              </div>
 
               <div className="single-widget-area newsletter-widget">
                 <div className="widget-title text-center">

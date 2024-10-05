@@ -38,6 +38,7 @@ const ProfileComp = () => {
 
   const [successAlert, setSuccessAlert] = useState(false);
   const [errorAlert, setErrorAlert] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const handleChange = (e) => {
     setFormData({
@@ -71,6 +72,7 @@ const ProfileComp = () => {
       notifications: data.notifications,
     };
     setFormData(userData);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -146,13 +148,16 @@ const ProfileComp = () => {
       return;
     }
 
-    const res = await fetch("https://delhavback.onrender.com/updateUserDetails/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+    const res = await fetch(
+      "https://delhavback.onrender.com/updateUserDetails/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      }
+    );
 
     const data = await res.json();
 
@@ -167,6 +172,14 @@ const ProfileComp = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+        <p>Loading...</p>
+      </div>
+    );
+  }
   return (
     <div className="container-xl px-4 mt-4">
       <ul className="nav nav-tabs" id="movieTabs" role="tablist">
@@ -732,16 +745,18 @@ const ProfileComp = () => {
         <div className="row tab-pane fade" id="notifs">
           {Object.keys(formData.notifications).length > 0 ? (
             <div>
-              {Object.entries(formData.notifications).map(([date, notifs], index) => (
-                <div key={index} className="notification-date-section">
-                  <h4>{date}</h4>
-                  {notifs.map((notif, i) => (
-                    <div key={i} className="notification-card">
-                      <p>{notif}</p>
-                    </div>
-                  ))}
-                </div>
-              ))}
+              {Object.entries(formData.notifications).map(
+                ([date, notifs], index) => (
+                  <div key={index} className="notification-date-section">
+                    <h4>{date}</h4>
+                    {notifs.map((notif, i) => (
+                      <div key={i} className="notification-card">
+                        <p>{notif}</p>
+                      </div>
+                    ))}
+                  </div>
+                )
+              )}
             </div>
           ) : (
             <div className="no-notifications">
