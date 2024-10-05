@@ -30,7 +30,6 @@ export default function HomePage() {
       setSideBlogs(data.side_blogs);
       setMainRecipes(data.main_recipes);
       setSideRecipes(data.side_recipes);
-      setLoading(false);
     } else {
       console.log(data.error);
     }
@@ -61,6 +60,7 @@ export default function HomePage() {
         },
       },
     });
+    setLoading(false);
   }, []);
 
   if (loading) {
